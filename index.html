@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Онлайн школа по вайб-кодингу</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #39ff6e;
+    --green-dim: #1a5c30;
+    --green-glow: rgba(57,255,110,0.18);
+    --bg: #080a09;
+    --surface: #0c110d;
+    --border: #182b1c;
+    --text: #d8f0dc;
+    --muted: #3f6045;
+    --mono: 'Share Tech Mono', monospace;
+    --head: 'Unbounded', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    overflow-x: hidden;
+  }
+
+  /* ── CANVAS BACKGROUND ── */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.45;
+  }
+
+  /* ─────────────────────────────────────────
+     HERO
+  ───────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  /* dot grid overlay */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(57,255,110,0.18) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* scan line */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.08) 3px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── CORNER ELEMENTS ── */
+  .corner {
+    position: absolute;
+    z-index: 3;
+    font-size: 14px;
+    color: var(--green);
+    font-family: var(--mono);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .corner-line {
+    width: 32px;
+    height: 1px;
+    background: var(--green);
+    opacity: 0.6;
+  }
+
+  .corner-line-v {
+    width: 1px;
+    height: 32px;
+    background: var(--green);
+    opacity: 0.6;
+  }
+
+  .corner.tl { top: 28px; left: 28px; align-items: flex-start; }
+  .corner.tr { top: 28px; right: 28px; align-items: flex-end; }
+  .corner.bl { bottom: 28px; left: 28px; align-items: flex-start; }
+  .corner.br { bottom: 28px; right: 28px; align-items: flex-end; }
+
+  .corner-icon {
+    font-size: 16px;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  /* ── SIDE TEXT ── */
+  .side-text {
+    position: absolute;
+    font-family: var(--head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green);
+    opacity: 0.7;
+    z-index: 3;
+    white-space: nowrap;
+  }
+
+  .side-text.left {
+    left: 28px;
+    top: 50%;
+    transform: translateX(-50%) rotate(-90deg) translateX(-50%);
+    transform-origin: center center;
+  }
+
+  .side-text.right {
+    right: 28px;
+    top: 50%;
+    transform: translateX(50%) rotate(90deg) translateX(50%);
+    transform-origin: center center;
+  }
+
+  /* ── HERO PANEL (central dark box) ── */
+  .hero-panel {
+    position: relative;
+    z-index: 2;
+    width: min(480px, 85vw);
+    border: 1px solid var(--green-dim);
+    background: rgba(8,10,9,0.92);
+    padding: 40px 36px 36px;
+    text-align: center;
+    backdrop-filter: blur(4px);
+  }
+
+  /* corner pixels */
+  .hero-panel::before, .hero-panel::after,
+  .hero-panel .cp-br, .hero-panel .cp-bl {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--green);
+  }
+  .hero-panel::before { top:-1px; left:-1px; }
+  .hero-panel::after  { top:-1px; right:-1px; }
+  .hero-panel .cp-br  { bottom:-1px; right:-1px; }
+  .hero-panel .cp-bl  { bottom:-1px; left:-1px; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-family: var(--head);
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    color: var(--green);
+    text-shadow:
+      0 0 20px rgba(57,255,110,0.5),
+      0 0 60px rgba(57,255,110,0.2);
+    margin-bottom: 10px;
+  }
+
+  .hero-subtitle {
+    font-family: var(--head);
+    font-size: clamp(13px, 2.5vw, 16px);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(57,255,110,0.5);
+    margin-bottom: 8px;
+  }
+
+  .hero-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-name span { color: rgba(57,255,110,0.4); }
+
+  .hero-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    letter-spacing: 0.03em;
+    margin-bottom: 28px;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    font-family: var(--head);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--bg);
+    background: var(--green);
+    padding: 13px 28px;
+    text-decoration: none;
+    transition: all 0.18s;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 20px rgba(57,255,110,0.3);
+  }
+
+  .hero-cta:hover {
+    background: #fff;
+    box-shadow: 0 0 32px rgba(57,255,110,0.5);
+  }
+
+  /* ── BOTTOM META ── */
+  .hero-bottom {
+    position: absolute;
+    bottom: 28px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 28px;
+    z-index: 3;
+  }
+
+  .hero-meta {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ─────────────────────────────────────────
+     ECOSYSTEM SECTION
+  ───────────────────────────────────────── */
+  .ecosystem {
+    position: relative;
+    z-index: 1;
+    background-image:
+      linear-gradient(rgba(57,255,110,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57,255,110,0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+    padding: 60px 20px 80px;
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* section divider */
+  .eco-header {
+    text-align: center;
+    margin-bottom: 56px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eco-header-tag {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .eco-header h2 {
+    font-family: var(--head);
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--green);
+  }
+
+  /* ── PIXEL BOX ── */
+  .box {
+    position: relative;
+    border: 1px solid var(--green-dim);
+    background: var(--surface);
+    padding: 22px 24px;
+  }
+
+  .box::before, .box::after,
+  .box > .corner-br, .box > .corner-bl {
+    content: '';
+    position: absolute;
+    width: 6px; height: 6px;
+    background: var(--green);
+  }
+  .box::before  { top:-1px;  left:-1px; }
+  .box::after   { top:-1px;  right:-1px; }
+  .box > .corner-br { bottom:-1px; right:-1px; }
+  .box > .corner-bl { bottom:-1px; left:-1px; }
+
+  /* ── SECTION HEADING ── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .sec-num {
+    font-family: var(--head);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--green);
+    width: 22px; height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sec-title {
+    font-family: var(--head);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--green);
+  }
+
+  .sec-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── PRODUCTS GRID ── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .prod-card {
+    padding: 18px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+  }
+
+  .prod-card::before, .prod-card::after,
+  .prod-card .c-br, .prod-card .c-bl {
+    content: '';
+    position: absolute;
+    width: 5px; height: 5px;
+    background: var(--green);
+  }
+  .prod-card::before { top:-1px; left:-1px; }
+  .prod-card::after  { top:-1px; right:-1px; }
+  .prod-card .c-br   { bottom:-1px; right:-1px; }
+  .prod-card .c-bl   { bottom:-1px; left:-1px; }
+
+  .prod-title {
+    font-family: var(--head);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .prod-items { list-style: none; }
+  .prod-items li {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 3px 0;
+    border-bottom: 1px solid #0f1a11;
+    letter-spacing: 0.02em;
+  }
+  .prod-items li:last-child { border-bottom: none; }
+  .prod-items li::before { content: '> '; color: var(--green); }
+
+  /* ── ARROW ── */
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .arrow-line {
+    width: 1px;
+    height: 24px;
+    background: linear-gradient(to bottom, var(--green-dim), transparent);
+  }
+
+  .arrow-tip {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid var(--green-dim);
+  }
+
+  /* ── ROADMAP ── */
+  .roadmap { display: flex; flex-direction: column; gap: 8px; }
+
+  .rm-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    border: 1px solid var(--border);
+  }
+
+  .rm-row.active { border-color: var(--green-dim); }
+
+  .rm-phase {
+    background: #0a0f0b;
+    border-right: 1px solid var(--border);
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .rm-row.active .rm-phase { border-right-color: var(--green-dim); }
+
+  .rm-phase-num {
+    font-family: var(--head);
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+  }
+
+  .rm-row.active .rm-phase-num {
+    color: var(--green);
+    text-shadow: 0 0 12px rgba(57,255,110,0.4);
+  }
+
+  .rm-phase-name {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .rm-row.active .rm-phase-name { color: var(--green); }
+
+  .rm-content { padding: 14px 16px; }
+
+  .rm-title {
+    font-family: var(--head);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .rm-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    list-style: none;
+  }
+
+  .rm-items li {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .rm-items li::before { content: '· '; color: #1e3a22; }
+
+  /* ── TRAFFIC ── */
+  .traffic-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .traffic-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 18px 16px;
+    position: relative;
+    text-align: center;
+  }
+
+  .traffic-card::before, .traffic-card::after,
+  .traffic-card .c-br, .traffic-card .c-bl {
+    content: '';
+    position: absolute;
+    width: 5px; height: 5px;
+    background: var(--green);
+  }
+  .traffic-card::before { top:-1px; left:-1px; }
+  .traffic-card::after  { top:-1px; right:-1px; }
+  .traffic-card .c-br   { bottom:-1px; right:-1px; }
+  .traffic-card .c-bl   { bottom:-1px; left:-1px; }
+
+  .traffic-logo {
+    margin: 0 auto 12px;
+    width: 44px; height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .traffic-name {
+    font-family: var(--head);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--green);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .traffic-items { list-style: none; text-align: left; }
+  .traffic-items li {
+    font-size: 10px;
+    color: var(--muted);
+    padding: 2px 0;
+    letter-spacing: 0.02em;
+  }
+  .traffic-items li::before { content: '> '; color: var(--green); }
+
+  /* ── FUNNEL ── */
+  .funnel-box {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 18px 20px;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  .funnel-box::before, .funnel-box::after,
+  .funnel-box .c-br, .funnel-box .c-bl {
+    content: '';
+    position: absolute;
+    width: 5px; height: 5px;
+    background: var(--green);
+  }
+  .funnel-box::before { top:-1px; left:-1px; }
+  .funnel-box::after  { top:-1px; right:-1px; }
+  .funnel-box .c-br   { bottom:-1px; right:-1px; }
+  .funnel-box .c-bl   { bottom:-1px; left:-1px; }
+
+  .funnel-label {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .path-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .path-step {
+    font-size: 11px;
+    color: var(--text);
+    padding: 5px 10px;
+    border: 1px solid var(--green-dim);
+    background: #0a0f0b;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+
+  .path-arrow { font-size: 11px; color: var(--green); }
+
+  /* ── ADVANTAGES ── */
+  .adv-grid {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+
+  .adv-pill {
+    font-size: 10px;
+    padding: 5px 12px;
+    border: 1px solid var(--green-dim);
+    color: var(--green);
+    background: #0a0f0b;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── TAGLINE ── */
+  .tagline {
+    text-align: center;
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .tagline p {
+    font-family: var(--head);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .tagline strong { color: var(--green); }
+
+  /* ── DNA decoration ── */
+  .dna-left, .dna-right {
+    position: absolute;
+    top: 0;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .dna-left  { left: 0; }
+  .dna-right { right: 0; transform: scaleX(-1); }
+
+  @media (max-width: 600px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .traffic-grid  { grid-template-columns: 1fr; }
+    .rm-row { grid-template-columns: 64px 1fr; }
+    .side-text { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CANVAS: code rain background -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ═══════════════════════════════════
+     HERO
+═══════════════════════════════════ -->
+<section class="hero">
+
+  <!-- DNA SVG left -->
+  <svg class="dna-left" width="80" height="100vh" viewBox="0 0 80 800" preserveAspectRatio="xMidYMid slice">
+    <g id="dna">
+      <script type="text/javascript">/* generated by JS */</script>
+    </g>
+  </svg>
+
+  <!-- Corners -->
+  <div class="corner tl">
+    <div class="corner-icon">⚠</div>
+    <div class="corner-line"></div>
+    <div class="corner-line-v"></div>
+  </div>
+  <div class="corner tr">
+    <div class="corner-icon">⚠</div>
+    <div class="corner-line"></div>
+    <div class="corner-line-v"></div>
+  </div>
+  <div class="corner bl">
+    <div class="corner-line-v"></div>
+    <div class="corner-line"></div>
+    <div class="corner-icon" style="font-size:13px;">▶</div>
+  </div>
+  <div class="corner br">
+    <div class="corner-line-v"></div>
+    <div class="corner-line"></div>
+    <div class="corner-icon" style="font-size:13px;">◀</div>
+  </div>
+
+  <!-- Side text -->
+  <div class="side-text left">ОНЛАЙН ШКОЛА · ВАЙБ-КОДИНГ</div>
+  <div class="side-text right">ПРОФЕССИЯ ПОД КЛЮЧ · ЭКОСИСТЕМА</div>
+
+  <!-- Central panel -->
+  <div class="hero-panel">
+    <div class="cp-br"></div><div class="cp-bl"></div>
+
+    <div class="hero-eyebrow">// структурное видение · 2026</div>
+
+    <div class="hero-title">ОНЛАЙН<br>ШКОЛА</div>
+    <div class="hero-subtitle">по вайб-кодингу</div>
+    <div class="hero-name">[ <span>название</span> ]</div>
+
+    <div class="hero-desc">
+      Онлайн-экосистема, которая доводит человека<br>
+      до профессии и трудоустройства под ключ
+    </div>
+
+    <a class="hero-cta" href="#ecosystem">СМОТРЕТЬ ВИДЕНИЕ ↓</a>
+  </div>
+
+  <!-- Bottom meta -->
+  <div class="hero-bottom">
+    <div class="hero-meta">от новичка до профессии</div>
+    <div class="hero-meta">обучение · сообщество · работа</div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════
+     ECOSYSTEM MAP
+═══════════════════════════════════ -->
+<section class="ecosystem" id="ecosystem">
+<div class="page">
+
+  <div class="eco-header">
+    <div class="eco-header-tag">// структурная карта экосистемы</div>
+    <h2>Структурное видение продукта</h2>
+  </div>
+
+  <!-- BLOCK 01: ПРОДУКТЫ -->
+  <div class="section-heading">
+    <div class="sec-num">01</div>
+    <div class="sec-title">Продукты экосистемы</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="products-grid">
+    <div class="prod-card"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="prod-title">💻 Обучение вайб-кодингу</div>
+      <ul class="prod-items">
+        <li>Создание агентов</li>
+        <li>Разработка веб-решений</li>
+        <li>Деплой и запуск проектов</li>
+        <li>Практика на реальных кейсах</li>
+      </ul>
+    </div>
+    <div class="prod-card"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="prod-title">🎯 Профессия под ключ</div>
+      <ul class="prod-items">
+        <li>Обучение → практика → работа</li>
+        <li>Сборка портфолио</li>
+        <li>Биржа вакансий</li>
+        <li>Помощь с первым доходом</li>
+      </ul>
+    </div>
+    <div class="prod-card"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="prod-title">⭐ Подписочный клуб</div>
+      <ul class="prod-items">
+        <li>Новые инструменты и фишки</li>
+        <li>Разборы кейсов</li>
+        <li>Нетворкинг</li>
+        <li>Поддержка участников</li>
+      </ul>
+    </div>
+    <div class="prod-card"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="prod-title">🤝 Офлайн-направление</div>
+      <ul class="prod-items">
+        <li>Мастермайнды</li>
+        <li>Совместный вайб-кодинг</li>
+        <li>Встречи в коворкингах</li>
+        <li>Обучение офлайн</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-tip"></div></div>
+
+  <!-- BLOCK 02: ДОРОЖНАЯ КАРТА -->
+  <div class="section-heading">
+    <div class="sec-num">02</div>
+    <div class="sec-title">Дорожная карта развития</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="roadmap">
+    <div class="rm-row active">
+      <div class="rm-phase"><div class="rm-phase-num">01</div><div class="rm-phase-name">Старт</div></div>
+      <div class="rm-content">
+        <div class="rm-title">Запуск контента и аудитории</div>
+        <ul class="rm-items">
+          <li>Ведение Instagram и YouTube</li>
+          <li>Запуск Telegram-канала</li>
+          <li>Первые подписчики и прогрев</li>
+          <li>Бесплатные материалы и кейсы</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-phase"><div class="rm-phase-num">02</div><div class="rm-phase-name">Комьюнити</div></div>
+      <div class="rm-content">
+        <div class="rm-title">Закрытое сообщество и клуб</div>
+        <ul class="rm-items">
+          <li>Запуск подписочного клуба</li>
+          <li>Закрытое комьюнити</li>
+          <li>Первые офлайн-встречи</li>
+          <li>Нетворкинг и разборы</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-phase"><div class="rm-phase-num">03</div><div class="rm-phase-name">Продукт</div></div>
+      <div class="rm-content">
+        <div class="rm-title">Полноценное обучение</div>
+        <ul class="rm-items">
+          <li>Запуск образовательного курса</li>
+          <li>Практика на реальных проектах</li>
+          <li>Сборка портфолио выпускников</li>
+          <li>Первые трудоустройства</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-phase"><div class="rm-phase-num">04</div><div class="rm-phase-name">Экосистема</div></div>
+      <div class="rm-content">
+        <div class="rm-title">Биржа вакансий и масштаб</div>
+        <ul class="rm-items">
+          <li>Запуск собственной биржи вакансий</li>
+          <li>Офлайн-мастермайнды в городах</li>
+          <li>Партнёрства с компаниями</li>
+          <li>Полный цикл: обучение → работа</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-tip"></div></div>
+
+  <!-- BLOCK 03: ТРАФИК -->
+  <div class="section-heading">
+    <div class="sec-num">03</div>
+    <div class="sec-title">Источники трафика</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="traffic-grid">
+    <div class="traffic-card"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="traffic-logo">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <defs>
+            <radialGradient id="ig" cx="30%" cy="100%" r="120%">
+              <stop offset="0%" stop-color="#ffd600"/>
+              <stop offset="30%" stop-color="#ff6d00"/>
+              <stop offset="60%" stop-color="#e91e8c"/>
+              <stop offset="100%" stop-color="#6a1b9a"/>
+            </radialGradient>
+          </defs>
+          <rect width="44" height="44" rx="10" fill="url(#ig)"/>
+          <rect x="10" y="10" width="24" height="24" rx="7" stroke="white" stroke-width="2.2" fill="none"/>
+          <circle cx="22" cy="22" r="5.5" stroke="white" stroke-width="2.2" fill="none"/>
+          <circle cx="31" cy="13" r="1.5" fill="white"/>
+        </svg>
+      </div>
+      <div class="traffic-name">Instagram</div>
+      <ul class="traffic-items"><li>Reels и посты</li><li>Сторис и прогрев</li><li>Охват аудитории</li></ul>
+    </div>
+
+    <div class="traffic-card"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="traffic-logo">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect width="44" height="44" rx="10" fill="#FF0000"/>
+          <path d="M35.5 16.2C35.2 14.9 34.2 13.9 32.9 13.6C30.6 13 22 13 22 13C22 13 13.4 13 11.1 13.6C9.8 13.9 8.8 14.9 8.5 16.2C8 18.5 8 22 8 22C8 22 8 25.5 8.5 27.8C8.8 29.1 9.8 30.1 11.1 30.4C13.4 31 22 31 22 31C22 31 30.6 31 32.9 30.4C34.2 30.1 35.2 29.1 35.5 27.8C36 25.5 36 22 36 22C36 22 36 18.5 35.5 16.2Z" fill="white"/>
+          <path d="M19.5 26.5V17.5L27.5 22L19.5 26.5Z" fill="#FF0000"/>
+        </svg>
+      </div>
+      <div class="traffic-name">YouTube</div>
+      <ul class="traffic-items"><li>Длинный контент</li><li>Обучающие видео</li><li>SEO-трафик</li></ul>
+    </div>
+
+    <div class="traffic-card"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="traffic-logo">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect width="44" height="44" rx="10" fill="#26A5E4"/>
+          <path d="M9.5 21.2L32.6 12.5C33.6 12.1 34.5 12.8 34.1 14.2L30.2 32.1C29.9 33.3 29.1 33.6 28.1 33L22.1 28.6L19.2 31.4C18.9 31.7 18.6 31.9 18 31.9L18.4 25.7L29.5 15.6C30 15.2 29.4 14.9 28.8 15.3L15.1 23.9L9.2 22.1C8 21.7 8 20.9 9.5 21.2Z" fill="white"/>
+        </svg>
+      </div>
+      <div class="traffic-name">Telegram</div>
+      <ul class="traffic-items"><li>Центральный хаб</li><li>Прогрев и доверие</li><li>Прямая коммуникация</li></ul>
+    </div>
+  </div>
+
+  <div class="funnel-box">
+    <div class="c-br"></div><div class="c-bl"></div>
+    <div class="funnel-label">// путь клиента</div>
+    <div class="path-row">
+      <span class="path-step">Трафик</span><span class="path-arrow">→</span>
+      <span class="path-step">Контент</span><span class="path-arrow">→</span>
+      <span class="path-step">Telegram</span><span class="path-arrow">→</span>
+      <span class="path-step">Комьюнити</span><span class="path-arrow">→</span>
+      <span class="path-step">Подписка</span><span class="path-arrow">→</span>
+      <span class="path-step">Обучение</span><span class="path-arrow">→</span>
+      <span class="path-step">Профессия</span><span class="path-arrow">→</span>
+      <span class="path-step">Работа</span>
+    </div>
+  </div>
+
+  <div style="font-size:9px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin:28px 0 10px;">// ключевые преимущества</div>
+  <div class="adv-grid">
+    <span class="adv-pill">Профессия под ключ</span>
+    <span class="adv-pill">Биржа вакансий</span>
+    <span class="adv-pill">Сильное комьюнити</span>
+    <span class="adv-pill">Онлайн + Офлайн</span>
+    <span class="adv-pill">Практика вместо теории</span>
+  </div>
+
+  <div class="tagline">
+    <p>От новичка до <strong>трудоустроенного вайб-разработчика</strong></p>
+  </div>
+
+</div>
+</section>
+
+<script>
+// ══════════════════════════════════
+// MATRIX CODE RAIN
+// ══════════════════════════════════
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const CHARS = 'ABCDEFGHIJKLMNabcdefghijklm01{}[]<>/\\|;:function()=>const letvarreturnclassimportexportasyncawait'.split('');
+const DNA_CHARS = 'ATCGATCGATCG'.split('');
+const ALL_CHARS = [...CHARS, ...DNA_CHARS];
+
+const FONT_SIZE = 13;
+let cols = Math.floor(canvas.width / FONT_SIZE);
+let drops = Array.from({length: cols}, () => Math.random() * -80);
+
+// Different shades for variety
+const GREENS = ['#003310', '#004d18', '#006622', '#007a28', '#00a835', '#00cc42', '#39ff6e'];
+
+function drawRain() {
+  ctx.fillStyle = 'rgba(8,10,9,0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  cols = Math.floor(canvas.width / FONT_SIZE);
+  while (drops.length < cols) drops.push(Math.random() * -80);
+
+  for (let i = 0; i < cols; i++) {
+    const char = ALL_CHARS[Math.floor(Math.random() * ALL_CHARS.length)];
+    const shade = GREENS[Math.floor(Math.random() * GREENS.length)];
+
+    // brighter lead char
+    if (drops[i] > 0) {
+      ctx.fillStyle = 'rgba(57,255,110,0.9)';
+      ctx.font = `${FONT_SIZE}px 'Share Tech Mono', monospace`;
+      ctx.fillText(char, i * FONT_SIZE, drops[i] * FONT_SIZE);
+    }
+
+    ctx.fillStyle = shade;
+    ctx.font = `${FONT_SIZE - 1}px 'Share Tech Mono', monospace`;
+    if (drops[i] > 1) {
+      const prevChar = ALL_CHARS[Math.floor(Math.random() * ALL_CHARS.length)];
+      ctx.fillText(prevChar, i * FONT_SIZE, (drops[i] - 1) * FONT_SIZE);
+    }
+
+    if (drops[i] * FONT_SIZE > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i] += 0.5;
+  }
+}
+
+// Draw DNA helix on canvas as overlay (decorative static)
+function drawDNA() {
+  const w = 60, steps = 40, h = window.innerHeight;
+  const amplitude = 18;
+  const period = 60;
+
+  // Left helix
+  for (let y = 0; y < h; y += period / steps) {
+    const t = (y / period) * Math.PI * 2;
+    const x1 = w / 2 + Math.sin(t) * amplitude;
+    const x2 = w / 2 + Math.sin(t + Math.PI) * amplitude;
+
+    const alpha = 0.12 + 0.08 * Math.abs(Math.sin(t));
+    ctx.fillStyle = `rgba(57,255,110,${alpha})`;
+    ctx.beginPath();
+    ctx.arc(x1, y, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x2, y, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // rungs every half period
+    if (Math.floor(y / (period / 2)) !== Math.floor((y - period / steps) / (period / 2))) {
+      ctx.strokeStyle = `rgba(57,255,110,0.07)`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x1, y);
+      ctx.lineTo(x2, y);
+      ctx.stroke();
+    }
+  }
+
+  // Right helix (mirror)
+  const rx = canvas.width - w;
+  for (let y = 0; y < h; y += period / steps) {
+    const t = (y / period) * Math.PI * 2;
+    const x1 = rx + Math.sin(t) * amplitude;
+    const x2 = rx + Math.sin(t + Math.PI) * amplitude;
+
+    const alpha = 0.12 + 0.08 * Math.abs(Math.sin(t));
+    ctx.fillStyle = `rgba(57,255,110,${alpha})`;
+    ctx.beginPath();
+    ctx.arc(x1, y, 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x2, y, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (Math.floor(y / (period / 2)) !== Math.floor((y - period / steps) / (period / 2))) {
+      ctx.strokeStyle = `rgba(57,255,110,0.07)`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x1, y);
+      ctx.lineTo(x2, y);
+      ctx.stroke();
+    }
+  }
+}
+
+let frame = 0;
+function animate() {
+  drawRain();
+  if (frame % 120 === 0) drawDNA(); // refresh DNA every 2 sec
+  frame++;
+  requestAnimationFrame(animate);
+}
+
+// Initial DNA draw then start loop
+drawDNA();
+animate();
+</script>
+</body>
+</html>
