@@ -652,6 +652,66 @@
   .dna-left  { left: 0; }
   .dna-right { right: 0; transform: scaleX(-1); }
 
+  /* ── HOVER DIMMING EFFECT ── */
+
+  /* transition on all interactive cards */
+  .prod-card, .rm-row, .traffic-card, .path-step, .adv-pill {
+    transition: opacity 0.22s ease, border-color 0.22s ease,
+                box-shadow 0.22s ease, filter 0.22s ease;
+  }
+
+  /* Products */
+  .products-grid:has(.prod-card:hover) .prod-card:not(:hover) {
+    opacity: 0.3;
+    filter: brightness(0.5);
+  }
+  .prod-card:hover {
+    border-color: var(--green) !important;
+    box-shadow: 0 0 18px rgba(57,255,110,0.12);
+  }
+
+  /* Roadmap */
+  .roadmap:has(.rm-row:hover) .rm-row:not(:hover) {
+    opacity: 0.3;
+    filter: brightness(0.5);
+  }
+  .rm-row:hover {
+    border-color: var(--green) !important;
+    box-shadow: 0 0 18px rgba(57,255,110,0.1);
+  }
+
+  /* Traffic */
+  .traffic-grid:has(.traffic-card:hover) .traffic-card:not(:hover) {
+    opacity: 0.3;
+    filter: brightness(0.5);
+  }
+  .traffic-card:hover {
+    border-color: var(--green) !important;
+    box-shadow: 0 0 18px rgba(57,255,110,0.12);
+  }
+
+  /* Path steps */
+  .path-row:has(.path-step:hover) .path-step:not(:hover) {
+    opacity: 0.3;
+    filter: brightness(0.5);
+  }
+  .path-step:hover {
+    border-color: var(--green) !important;
+    color: var(--green);
+    box-shadow: 0 0 12px rgba(57,255,110,0.15);
+    cursor: default;
+  }
+
+  /* Advantages */
+  .adv-grid:has(.adv-pill:hover) .adv-pill:not(:hover) {
+    opacity: 0.3;
+    filter: brightness(0.5);
+  }
+  .adv-pill:hover {
+    box-shadow: 0 0 12px rgba(57,255,110,0.15);
+    background: #0d180f;
+  }
+
   @media (max-width: 600px) {
     .products-grid { grid-template-columns: 1fr; }
     .traffic-grid  { grid-template-columns: 1fr; }
