@@ -641,6 +641,46 @@
 
   .tagline strong { color: var(--green); }
 
+  /* ── PROJECT HEADER ── */
+  .proj-header {
+    text-align: center;
+    padding: 40px 0 32px;
+    margin-bottom: 28px;
+  }
+
+  .proj-tag {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .proj-title {
+    font-family: var(--head);
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--green);
+    text-shadow: 0 0 24px rgba(57,255,110,0.35);
+    line-height: 1.1;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .proj-sub {
+    font-family: var(--head);
+    font-size: 13px;
+    color: rgba(57,255,110,0.4);
+    letter-spacing: 0.08em;
+  }
+
+  .proj-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--green-dim), transparent);
+    margin: 48px 0;
+  }
+
   /* ── DNA decoration ── */
   .dna-left, .dna-right {
     position: absolute;
@@ -815,16 +855,18 @@
 </section>
 
 <!-- ═══════════════════════════════════
-     ECOSYSTEM MAP
+     PROJECTS
 ═══════════════════════════════════ -->
 <section class="ecosystem" id="ecosystem">
 <div class="page">
 
-  <div class="eco-header">
-    <div class="eco-header-tag">// структурная карта экосистемы</div>
+  <!-- ── ПРОЕКТ 1: ОНЛАЙН-ШКОЛА ── -->
+  <div class="proj-header">
+    <div class="proj-tag">// проект 01</div>
+    <div class="proj-title">Онлайн-школа</div>
+    <div class="proj-sub">по вайб-кодингу</div>
   </div>
 
-  <!-- BLOCK 01: ПРОДУКТЫ -->
   <div class="section-heading">
     <div class="sec-num">01</div>
     <div class="sec-title">Продукты онлайн-школы</div>
@@ -870,16 +912,70 @@
     </div>
   </div>
 
-  <div class="arrow"><div class="arrow-line"></div><div class="arrow-tip"></div></div>
+  <div class="proj-divider"></div>
 
-  <!-- BLOCK 02: ДОРОЖНАЯ КАРТА -->
+  <!-- ── ПРОЕКТ 2: AI-АГЕНТСТВО ── -->
+  <div class="proj-header">
+    <div class="proj-tag">// проект 02</div>
+    <div class="proj-title">AI-агентство</div>
+    <div class="proj-sub">«SMM-агентство» · [ <span style="color:rgba(57,255,110,0.35);">название</span> ]</div>
+  </div>
+
   <div class="section-heading">
-    <div class="sec-num">02</div>
-    <div class="sec-title">Дорожная карта развития (кратко)</div>
+    <div class="sec-num">01</div>
+    <div class="sec-title">Продукты агентства</div>
     <div class="sec-line"></div>
   </div>
 
-  <div class="roadmap">
+  <div class="products-grid">
+    <div class="prod-card" onclick="toggleCard(this)"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="prod-title">🏭 Контент-завод <span class="prod-arrow">+</span></div>
+      <ul class="prod-items prod-collapse">
+        <li>Создание и внедрение контент-завода</li>
+        <li>Автоматизация производства контента</li>
+        <li>Reels, посты, сторис под ключ</li>
+        <li>AI-генерация и монтаж</li>
+      </ul>
+    </div>
+    <div class="prod-card" onclick="toggleCard(this)"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="prod-title">🤖 ИИ-агенты <span class="prod-arrow">+</span></div>
+      <ul class="prod-items prod-collapse">
+        <li>Внедрение ИИ-агентов в бизнес</li>
+        <li>Автоматизация рутинных задач</li>
+        <li>Интеграция с CRM и соцсетями</li>
+        <li>Кастомные AI-воркфлоу</li>
+      </ul>
+    </div>
+    <div class="prod-card" onclick="toggleCard(this)"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="prod-title">🎭 Личный бренд + AI <span class="prod-arrow">+</span></div>
+      <ul class="prod-items prod-collapse">
+        <li>Продвижение личного бренда с помощью AI</li>
+        <li>ИИ-аватары и цифровой двойник</li>
+        <li>Автоматизация публикаций</li>
+        <li>AI-контент от лица эксперта</li>
+      </ul>
+    </div>
+    <div class="prod-card" onclick="toggleCard(this)"><div class="c-br"></div><div class="c-bl"></div>
+      <div class="prod-title">💬 Чат-боты <span style="font-size:9px; color:var(--muted); font-family:var(--mono);">* tripwire</span> <span class="prod-arrow">+</span></div>
+      <ul class="prod-items prod-collapse">
+        <li>Чат-боты для продаж и поддержки</li>
+        <li>Интеграция в Telegram / WhatsApp</li>
+        <li>Низкий порог входа — быстрый результат</li>
+        <li>Лид-продукт для входа в агентство</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="proj-divider"></div>
+
+  <!-- ── ДОРОЖНАЯ КАРТА ОНЛАЙН-ШКОЛЫ ── -->
+  <div class="proj-header">
+    <div class="proj-tag">// дорожная карта · проект 01</div>
+    <div class="proj-title" style="font-size:clamp(18px,3vw,26px);">Онлайн-школа</div>
+    <div class="proj-sub">(кратко)</div>
+  </div>
+
+  <div class="roadmap" id="roadmap-school">
     <div class="rm-row active">
       <div class="rm-phase"><div class="rm-phase-num">01</div><div class="rm-phase-name">Старт</div></div>
       <div class="rm-content">
@@ -930,9 +1026,81 @@
     </div>
   </div>
 
-  <div class="arrow"><div class="arrow-line"></div><div class="arrow-tip"></div></div>
+  <div class="proj-divider"></div>
 
-  <!-- BLOCK 03: ТРАФИК -->
+  <!-- ── ДОРОЖНАЯ КАРТА AI-АГЕНТСТВА ── -->
+  <div class="proj-header">
+    <div class="proj-tag">// дорожная карта · проект 02</div>
+    <div class="proj-title" style="font-size:clamp(18px,3vw,26px);">AI-агентство</div>
+    <div class="proj-sub">(кратко)</div>
+  </div>
+
+  <div class="roadmap" id="roadmap-agency">
+    <div class="rm-row active">
+      <div class="rm-phase"><div class="rm-phase-num">01</div><div class="rm-phase-name">Аудит</div></div>
+      <div class="rm-content">
+        <div class="rm-title">Аудит и консалтинг по AI</div>
+        <ul class="rm-items">
+          <li>Аудит бизнес-процессов клиента</li>
+          <li>Карта внедрения AI-инструментов</li>
+          <li>Консалтинг по автоматизации</li>
+          <li>Первичная точка контакта с агентством</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-phase"><div class="rm-phase-num">02</div><div class="rm-phase-name">Tripwire</div></div>
+      <div class="rm-content">
+        <div class="rm-title">AI чат-бот — лид-продукт</div>
+        <ul class="rm-items">
+          <li>Быстрый результат за небольшой чек</li>
+          <li>Чат-бот под задачу клиента</li>
+          <li>Telegram / WhatsApp интеграция</li>
+          <li>Переход к основному флагману</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-phase"><div class="rm-phase-num">03</div><div class="rm-phase-name">Флагман</div></div>
+      <div class="rm-content">
+        <div class="rm-title">Продажа основного продукта</div>
+        <ul class="rm-items">
+          <li>Контент-завод под ключ</li>
+          <li>Внедрение ИИ-агентов в бизнес</li>
+          <li>Продвижение личного бренда + AI</li>
+          <li>Комплексная автоматизация SMM</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-phase"><div class="rm-phase-num">04</div><div class="rm-phase-name">Допродажа</div></div>
+      <div class="rm-content">
+        <div class="rm-title">Допродажа продуктов SMM-агентства</div>
+        <ul class="rm-items">
+          <li>Расширение пакета услуг</li>
+          <li>ИИ-аватары и цифровой двойник</li>
+          <li>Дополнительные AI-воркфлоу</li>
+          <li>Масштабирование результата</li>
+        </ul>
+      </div>
+    </div>
+    <div class="rm-row">
+      <div class="rm-phase"><div class="rm-phase-num">05</div><div class="rm-phase-name">Абонемент</div></div>
+      <div class="rm-content">
+        <div class="rm-title">Консалтинг по абонентской плате</div>
+        <ul class="rm-items">
+          <li>IT-инструмент на базе ИИ (подписка)</li>
+          <li>Telegram-бот с набором AI-инструментов</li>
+          <li>Ежемесячное сопровождение и развитие</li>
+          <li>Долгосрочные отношения с клиентом</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="proj-divider"></div>
+
+  <!-- ── ТРАФИК ── -->
   <div class="section-heading">
     <div class="sec-num">03</div>
     <div class="sec-title">Источники трафика</div>
@@ -952,7 +1120,6 @@
       <div class="traffic-name">Instagram</div>
       <ul class="traffic-items"><li>Reels и посты</li><li>Сторис и прогрев</li><li>Охват аудитории</li></ul>
     </div>
-
     <div class="traffic-card"><div class="c-br"></div><div class="c-bl"></div>
       <div class="traffic-logo">
         <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
@@ -965,7 +1132,6 @@
       <div class="traffic-name">YouTube</div>
       <ul class="traffic-items"><li>Длинный контент</li><li>Обучающие видео</li><li>SEO-трафик</li></ul>
     </div>
-
     <div class="traffic-card"><div class="c-br"></div><div class="c-bl"></div>
       <div class="traffic-logo">
         <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
@@ -993,88 +1159,8 @@
     </div>
   </div>
 
-  <div style="font-size:9px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;margin:28px 0 10px;">// ключевые преимущества</div>
-  <div class="adv-grid">
-    <span class="adv-pill">Профессия под ключ</span>
-    <span class="adv-pill">Биржа вакансий</span>
-    <span class="adv-pill">Сильное комьюнити</span>
-    <span class="adv-pill">Онлайн + Офлайн</span>
-    <span class="adv-pill">Практика вместо теории</span>
-  </div>
-
   <div class="tagline">
-    <p>От новичка до <strong>трудоустроенного вайб-разработчика</strong></p>
-  </div>
-
-</div>
-</section>
-
-<!-- ═══════════════════════════════════
-     AI AGENCY PAGE
-═══════════════════════════════════ -->
-<section class="ecosystem" id="agency" style="border-top: 1px solid #182b1c;">
-<div class="page">
-
-  <div class="eco-header">
-    <div class="eco-header-tag">// структурное видение · проект 2</div>
-  </div>
-
-  <!-- Hero agency -->
-  <div style="text-align:center; margin-bottom: 48px; padding: 40px 0 32px; border-bottom: 1px solid #182b1c;">
-    <div style="font-family:var(--head); font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">ПРОЕКТ</div>
-    <div style="font-family:var(--head); font-size:clamp(26px,4vw,38px); font-weight:900; text-transform:uppercase; color:var(--green); text-shadow:0 0 24px rgba(57,255,110,0.4); line-height:1.1; margin-bottom:8px;">AI-АГЕНТСТВО</div>
-    <div style="font-family:var(--head); font-size:14px; color:rgba(57,255,110,0.45); letter-spacing:0.1em; margin-bottom:8px;">«SMM-агентство»</div>
-    <div style="font-family:var(--mono); font-size:13px; color:var(--muted); letter-spacing:0.06em;">[ <span style="color:rgba(57,255,110,0.35);">название</span> ]</div>
-  </div>
-
-  <!-- Products -->
-  <div class="section-heading">
-    <div class="sec-num">01</div>
-    <div class="sec-title">Продукты агентства</div>
-    <div class="sec-line"></div>
-  </div>
-
-  <div class="products-grid">
-    <div class="prod-card" onclick="toggleCard(this)"><div class="c-br"></div><div class="c-bl"></div>
-      <div class="prod-title">🏭 Контент-завод <span class="prod-arrow">+</span></div>
-      <ul class="prod-items prod-collapse">
-        <li>Создание и внедрение контент-завода</li>
-        <li>Автоматизация производства контента</li>
-        <li>Reels, посты, сторис под ключ</li>
-        <li>AI-генерация и монтаж</li>
-      </ul>
-    </div>
-    <div class="prod-card" onclick="toggleCard(this)"><div class="c-br"></div><div class="c-bl"></div>
-      <div class="prod-title">🤖 ИИ-агенты <span class="prod-arrow">+</span></div>
-      <ul class="prod-items prod-collapse">
-        <li>Внедрение ИИ-агентов в бизнес</li>
-        <li>Автоматизация рутинных задач</li>
-        <li>Интеграция с CRM и соцсетями</li>
-        <li>Кастомные AI-воркфлоу</li>
-      </ul>
-    </div>
-    <div class="prod-card" onclick="toggleCard(this)"><div class="c-br"></div><div class="c-bl"></div>
-      <div class="prod-title">🎭 Личный бренд + AI <span class="prod-arrow">+</span></div>
-      <ul class="prod-items prod-collapse">
-        <li>Продвижение личного бренда с помощью AI</li>
-        <li>ИИ-аватары и цифровой двойник</li>
-        <li>Автоматизация публикаций</li>
-        <li>AI-контент от лица эксперта</li>
-      </ul>
-    </div>
-    <div class="prod-card" onclick="toggleCard(this)"><div class="c-br"></div><div class="c-bl"></div>
-      <div class="prod-title">💬 Чат-боты <span style="font-size:9px; color:var(--muted); font-family:var(--mono);">* tripwire</span> <span class="prod-arrow">+</span></div>
-      <ul class="prod-items prod-collapse">
-        <li>Чат-боты для продаж и поддержки</li>
-        <li>Интеграция в Telegram / WhatsApp</li>
-        <li>Низкий порог входа — быстрый результат</li>
-        <li>Лид-продукт для входа в агентство</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="tagline" style="margin-top:40px;">
-    <p>AI-агентство полного цикла — <strong>от контента до автоматизации</strong></p>
+    <p>Два проекта — одна экосистема: <strong>обучение + агентство</strong></p>
   </div>
 
 </div>
@@ -1182,14 +1268,14 @@ function toggleCard(card) {
 }
 
 // ── ROADMAP HOVER ──
-const roadmap = document.querySelector('.roadmap');
 document.querySelectorAll('.rm-row').forEach(row => {
+  const parentRoadmap = row.closest('.roadmap');
   row.addEventListener('mouseenter', () => {
-    roadmap.classList.add('has-hover');
+    parentRoadmap.classList.add('has-hover');
     row.classList.add('rm-hovered');
   });
   row.addEventListener('mouseleave', () => {
-    roadmap.classList.remove('has-hover');
+    parentRoadmap.classList.remove('has-hover');
     row.classList.remove('rm-hovered');
   });
 });
